@@ -1,0 +1,22 @@
+import yargs from "yargs";
+import {hideBin} from "yargs/helpers"
+import initRepo from "./controllers/init.js"
+import addRepo from "./controllers/add.js";
+import commitRepo from "./controllers/commit.js";
+
+
+
+yargs(hideBin(process.argv)).command("init","Initialise a new repository", {},initRepo)
+.command("add <file>","Add file to the repository", (yargs)=>{
+    yargs.positional("file", {
+        describcoe: "File to add to the staging area",
+        type: "String",
+    })
+},addRepo)
+.command("commit <message>", "commit the staged file",(yargs)=>{
+    yargs.positional("message",{
+        describe: "commit message",
+        type: "String"
+    });
+},commitRepo)
+.demandCommand(1,"you need to enter atleast one command").help().argv
