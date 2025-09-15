@@ -3,6 +3,8 @@ import {hideBin} from "yargs/helpers"
 import initRepo from "./controllers/init.js"
 import addRepo from "./controllers/add.js";
 import commitRepo from "./controllers/commit.js";
+import pushRepo from "./controllers/push.js";
+import pullRepo from "./controllers/pull.js";
 
 
 
@@ -19,4 +21,6 @@ yargs(hideBin(process.argv)).command("init","Initialise a new repository", {},in
         type: "String"
     });
 },commitRepo)
+.command("push","push comm to s3",{},pushRepo)
+.command("pull","pull commits from s3",{},pullRepo)
 .demandCommand(1,"you need to enter atleast one command").help().argv
