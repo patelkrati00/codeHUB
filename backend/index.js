@@ -5,6 +5,7 @@ import addRepo from "./controllers/add.js";
 import commitRepo from "./controllers/commit.js";
 import pushRepo from "./controllers/push.js";
 import pullRepo from "./controllers/pull.js";
+import revertRepo from "./controllers/revert.js";
 
 
 
@@ -23,4 +24,10 @@ yargs(hideBin(process.argv)).command("init","Initialise a new repository", {},in
 },commitRepo)
 .command("push","push comm to s3",{},pushRepo)
 .command("pull","pull commits from s3",{},pullRepo)
+.command("revert <commitId>"," Revert to a specific commit",(yargs)=>{
+    yargs.positional("commitId",{
+        describe: "Commit Id to revert to",
+        type: "String"
+    });
+}, revertRepo)
 .demandCommand(1,"you need to enter atleast one command").help().argv
