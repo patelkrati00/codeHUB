@@ -3,7 +3,8 @@ import dotenv from "dotenv";       // load environment variables
 import cors from "cors";           // enable cross-origin requests
 import bodyParser from "body-parser";
 import mongoose from "mongoose";   // MongoDB ODM
-
+import { Server } from "socket.io";
+import http from "http";
 
 
 import yargs from "yargs";
@@ -14,6 +15,7 @@ import commitRepo from "./controllers/commit.js";
 import pushRepo from "./controllers/push.js";
 import pullRepo from "./controllers/pull.js";
 import revertRepo from "./controllers/revert.js";
+import { log } from "console";
 
 dotenv.config();
 
@@ -50,9 +52,43 @@ function startServer() {
     app.use(bodyParser.json());
     app.use(express.json());
 
-    console.log("Server running on port", port)
     const mongoUrl = process.env.MONGO_URL;
     mongoose.connect(mongoUrl)
     .then(() => { console.log("mongoDb connected") })
     .catch((err) => { console.log("unable to connect to DB", err) })
+
+    app.use(cors({origin:"*"}));
+
+    app.get('/',(req,res)=>{
+        res.send("welcome");
+    })
+
+    let user = "test";
+    const httpServer = http.createServer(app)
+    const io = new Server(httpServer,{
+        cors : {
+            origin : "*",
+            methods : ["GET","POST"],
+        }
+    });
+
+    io.on("connection", (socket)=>{
+        socket.on("joinRoom",(userId)=>{
+            user = userId;
+            console.log("=======")
+            console.log(user)
+            console.log("======")
+            socket.join(userId)
+        });
+    })
+
+const db = mongoose.connection;
+
+    db.once("open",async ()=>{
+        console.log("crud operations called");
+    })
+
+    httpServer.listen(port,()=>{
+        console.log(`Server is listening on port ${port}`)
+    })
 }
