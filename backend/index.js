@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";   // MongoDB ODM
 import { Server } from "socket.io";
 import http from "http";
+import mainRouter from "./routes/mainRouter.js";
 
 
 import yargs from "yargs";
@@ -59,9 +60,7 @@ function startServer() {
 
     app.use(cors({origin:"*"}));
 
-    app.get('/',(req,res)=>{
-        res.send("welcome");
-    })
+    app.use('/',mainRouter);
 
     let user = "test";
     const httpServer = http.createServer(app)
