@@ -92,7 +92,24 @@ export const login = async (req, res) => {
 };
 
 export const getUserProfile = async (req, res) => {
-    res.send("UserProfile");
+    const currId = req.params.id;
+    try {
+        await connectionClient();
+        const db = client.db("githubclone")
+        const userCollection = db.collection("users");
+
+        const user = await userCollection.findOne({
+            _id: new ObjectId(currId)
+
+        })
+         if (!user) {
+            return res.status(400).json({ message: "User not found" })
+        }
+        res.send(user);
+    } catch (err) {
+        console.log("Error in login", err)
+        return res.status(500).json({ message: "server error" })
+    }
 };
 
 export const updateUserProfile = async (req, res) => {
