@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv"
+import { ObjectId } from "mongodb";
+
 
 dotenv.config();
 const uri = process.env.MONGO_URL;
@@ -16,8 +18,18 @@ async function connectionClient() {
 
 }
 
-export const getAllUsers = (req, res) => {
-    res.send("all users");
+export const getAllUsers = async (req, res) => {
+    try {
+        await connectionClient();
+        const db = client.db("githubclone")
+        const userCollection = db.collection("users");
+
+        const users = await userCollection.find({}).toArray();
+        res.json(users);
+    } catch (err) {
+        console.log("Error in login", err)
+        return res.status(500).json({ message: "server error" })
+    }
 };
 
 export const signup = async (req, res) => {
@@ -67,7 +79,7 @@ export const login = async (req, res) => {
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch){
+        if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" })
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
@@ -79,14 +91,14 @@ export const login = async (req, res) => {
     }
 };
 
-export const getUserProfile = (req, res) => {
+export const getUserProfile = async (req, res) => {
     res.send("UserProfile");
 };
 
-export const updateUserProfile = (req, res) => {
+export const updateUserProfile = async (req, res) => {
     res.send("update UserProfile");
 };
 
-export const deleteUserProfile = (req, res) => {
+export const deleteUserProfile = async (req, res) => {
     res.send("UserProfile deleted");
 };
