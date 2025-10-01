@@ -13,4 +13,3 @@ mainRouter.get("/", (req, res) => {
 });
 
 export default mainRouter;
-4

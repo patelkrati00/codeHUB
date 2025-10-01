@@ -4,7 +4,6 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv"
 import { ObjectId } from "mongodb";
 
-
 dotenv.config();
 const uri = process.env.MONGO_URL;
 
@@ -102,7 +101,7 @@ export const getUserProfile = async (req, res) => {
             _id: new ObjectId(currId)
 
         })
-         if (!user) {
+        if (!user) {
             return res.status(400).json({ message: "User not found" })
         }
         res.send(user);
@@ -112,10 +111,28 @@ export const getUserProfile = async (req, res) => {
     }
 };
 
-export const updateUserProfile = async (req, res) => {
-    res.send("update UserProfile");
-};
+export const deleteUserProfile= async(req, res)=>{
+  const currentID = req.params.id;
 
-export const deleteUserProfile = async (req, res) => {
-    res.send("UserProfile deleted");
-};
+  try {
+    await connectionClient();
+    const db = client.db("githubclone");
+    const usersCollection = db.collection("users");
+
+    const result = await usersCollection.deleteOne({
+      _id: new ObjectId(currentID),
+    });
+
+    if (result.deletedCount === 0) {  // corrected property
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    res.json({ message: "User Profile Deleted!" });
+  } catch (err) {
+    console.error("Error during deletion: ", err.message);
+    res.status(500).send("Server error!");
+  }
+}
+
+export default deleteUserProfile;
+
