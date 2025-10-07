@@ -138,5 +138,23 @@ export const toggleVisibilityById = async (req, res) => {
 
 
 export const deleteRepositoryById = async (req, res) => {
-    res.send("delete");
+    const { id } = req.params;
+
+    try {
+        const deletedRepository = await Repository.findByIdAndDelete(id);
+
+        if (!deletedRepository) {
+            return res.status(404).json({ message: "Repository not found" });
+        }
+
+        // Delete associated issues if any
+        if (deletedRepository.issues && deletedRepository.issues.length > 0) {
+            await Issue.deleteMany({ _id: { $in: deletedRepository.issues } });
+        }
+
+        res.status(200).json({ message: "Repository and associated issues deleted successfully" });
+    } catch (err) {  
+        console.error("Error deleting repository:", err.message);
+        res.status(500).json({ message: "Server error!" });
+    }
 };
