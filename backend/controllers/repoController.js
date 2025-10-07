@@ -7,10 +7,10 @@ import Issue from "../models/issueModel.js";
 export const createRepository = async (req, res) => {
     const { owner, name, description, visibility, content, issues } = req.body;
     try {
-        if(!name){
+        if (!name) {
             return res.status(400).json({ message: "Repository name is required" });
         }
-        if(!mongoose.Types.ObjectId.isValid(owner)){
+        if (!mongoose.Types.ObjectId.isValid(owner)) {
             return res.status(400).json({ message: "Invalid owner ID" });
         }
 
@@ -28,29 +28,36 @@ export const createRepository = async (req, res) => {
         console.error("Error during updating:", err.message);
         res.status(500).send("Server error!");
     };
-}
-    export const getAllRepositories = async (req, res) => {
-        res.send("get all repo");
-    };
+};
 
-    export const fetchRepositoryById = async (req, res) => {
-        res.send("fetched by id");
+export const getAllRepositories = async (req, res) => {
+   try{
+     const repositories = await Repository.find().populate('owner');
+        res.status(200).json(repositories);
+   }catch (err) {
+        console.error("Error during updating:", err.message);
+        res.status(500).send("Server error!");
     };
-    export const fetchRepositoryByName = (req, res) => {
-        res.send("fetched by name");
-    };
-    export const fetchRepositoriesForCurrentUser = async (req, res) => {
-        res.send("fetched for curr user");
-    };
+};
 
-    export const updateRepositoryById = async (req, res) => {
-        res.send("update by id");
-    };
+export const fetchRepositoryById = async (req, res) => {
+    res.send("fetched by id");
+};
+export const fetchRepositoryByName = (req, res) => {
+    res.send("fetched by name");
+};
+export const fetchRepositoriesForCurrentUser = async (req, res) => {
+    res.send("fetched for curr user");
+};
 
-    export const toggleVisibilityById = async (req, res) => {
-        res.send("toggle");
-    };
+export const updateRepositoryById = async (req, res) => {
+    res.send("update by id");
+};
 
-    export const deleteRepositoryById = async (req, res) => {
-        res.send("delete");
-    };
+export const toggleVisibilityById = async (req, res) => {
+    res.send("toggle");
+};
+
+export const deleteRepositoryById = async (req, res) => {
+    res.send("delete");
+};
