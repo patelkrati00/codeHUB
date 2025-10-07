@@ -111,28 +111,69 @@ export const getUserProfile = async (req, res) => {
     }
 };
 
-export const deleteUserProfile= async(req, res)=>{
-  const currentID = req.params.id;
-
+export const updateUserProfile = async (req, res) => {
   try {
+    const currentID = new ObjectId(req.params.id);
+    const { email, password } = req.body;
+
     await connectionClient();
     const db = client.db("githubclone");
     const usersCollection = db.collection("users");
 
-    const result = await usersCollection.deleteOne({
-      _id: new ObjectId(currentID),
-    });
+    let updateFields = {};
+    if (email) updateFields.email = email;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      updateFields.password = hashedPassword;
+    }
 
-    if (result.deletedCount === 0) {  // corrected property
+    // Perform the update
+    const result = await usersCollection.updateOne(
+      { _id: currentID },
+      { $set: updateFields }
+    );
+
+    if (result.matchedCount === 0) {
       return res.status(404).json({ message: "User not found!" });
     }
 
-    res.json({ message: "User Profile Deleted!" });
+    // Fetch the updated user
+    const updatedUser = await usersCollection.findOne({ _id: currentID });
+
+    res.json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+
   } catch (err) {
-    console.error("Error during deletion: ", err.message);
+    console.error("Error during updating:", err.message);
     res.status(500).send("Server error!");
   }
-}
+};
+
+export const deleteUserProfile = async (req, res) => {
+    const currentID = req.params.id;
+
+    try {
+        await connectionClient();
+        const db = client.db("githubclone");
+        const usersCollection = db.collection("users");
+
+        const result = await usersCollection.deleteOne({
+            _id: new ObjectId(currentID),
+        });
+
+        if (result.deletedCount === 0) {  // corrected property
+            return res.status(404).json({ message: "User not found!" });
+        }
+
+        res.json({ message: "User Profile Deleted!" });
+    } catch (err) {
+        console.error("Error during deletion: ", err.message);
+        res.status(500).send("Server error!");
+    }
+};
 
 export default deleteUserProfile;
 
