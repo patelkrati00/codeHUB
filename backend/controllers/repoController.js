@@ -116,7 +116,24 @@ export const updateRepositoryById = async (req, res) => {
 };
 
 export const toggleVisibilityById = async (req, res) => {
-   
+    const { id } = req.params;
+    try {
+
+        const updatedRepository =
+            await Repository.findByIdAndUpdate(
+                id,
+                [{ $set: { visibility: { $not: "$visibility" } } }], // aggregation pipeline update
+                { new: true }
+            ).populate('owner').populate('issues');
+        if (!updatedRepository) {
+            return res.status(404).json({ message: "Repository not found" });
+        }
+        res.status(200).json(updatedRepository);
+    }
+    catch (err) {
+        console.error("Error in toggling repo:", err.message);
+        res.status(500).json({ message: "Server error!" });
+    }
 };
 
 
