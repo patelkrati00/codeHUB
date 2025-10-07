@@ -1,36 +1,38 @@
-import mongoose from "mongoose";
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const RepositorySchema = new Schema({
-  timestamps: true,
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  description: {
-    type: String,
-  },
-  content: [
-    {
+const RepositorySchema = new Schema(
+  {
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    description: {
       type: String,
     },
-  ],
-  visibility: {
-    type: Boolean,
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  issues: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Issue",
+    content: [
+      {
+        type: String,
+      },
+    ],
+    visibility: {
+      type: Boolean,
     },
-  ],
-});
+
+    issues: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Issue",
+      },
+    ],
+  },
+  { timestamps: true } // ✅ correct place
+);
 
 const Repository = mongoose.model("Repository", RepositorySchema);
 export default Repository;
