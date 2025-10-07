@@ -136,7 +136,6 @@ export const toggleVisibilityById = async (req, res) => {
     }
 };
 
-
 export const deleteRepositoryById = async (req, res) => {
     const { id } = req.params;
 
