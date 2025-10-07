@@ -57,9 +57,25 @@ export const fetchRepositoryById = async (req, res) => {
         res.status(500).send("Server error!");
     };
 };
-export const fetchRepositoryByName = async(req, res) => {
-   
+export const fetchRepositoryByName = async (req, res) => {
+    const { name } = req.params;
+
+    try {
+        const repository = await Repository.findOne({ name }) // query object
+            .populate('owner')
+            .populate('issues');
+
+        if (!repository) {
+            return res.status(404).json({ message: "Repository not found" });
+        }
+
+        res.status(200).json(repository);
+    } catch (err) {
+        console.error("Error fetching repository:", err.message);
+        res.status(500).json({ message: "Server error!" });
+    }
 };
+
 export const fetchRepositoriesForCurrentUser = async (req, res) => {
     res.send("fetched for curr user");
 };
