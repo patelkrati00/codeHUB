@@ -31,7 +31,7 @@ const RepositorySchema = new Schema(
       },
     ],
   },
-  { timestamps: true } // ✅ correct place
+  { timestamps: true } 
 );
 
 const Repository = mongoose.model("Repository", RepositorySchema);

@@ -31,20 +31,34 @@ export const createRepository = async (req, res) => {
 };
 
 export const getAllRepositories = async (req, res) => {
-   try{
-     const repositories = await Repository.find().populate('owner');
+    try {
+        const repositories = await Repository.find().populate('owner');
         res.status(200).json(repositories);
-   }catch (err) {
+    } catch (err) {
         console.error("Error during updating:", err.message);
         res.status(500).send("Server error!");
     };
 };
 
 export const fetchRepositoryById = async (req, res) => {
-    res.send("fetched by id");
+    const repoId = req.params.id;
+        console.log("Received repoId:", repoId);
+
+
+    try {
+        const repository = await Repository.findById(repoId).populate('owner').populate('issues');
+
+        if (!repository) {
+            return res.status(404).json({ message: "Repository not found" });
+        }
+        res.status(200).json(repository);
+    } catch (err) {
+        console.error("Error during fetching repo by its id:", err.message);
+        res.status(500).send("Server error!");
+    };
 };
-export const fetchRepositoryByName = (req, res) => {
-    res.send("fetched by name");
+export const fetchRepositoryByName = async(req, res) => {
+   
 };
 export const fetchRepositoriesForCurrentUser = async (req, res) => {
     res.send("fetched for curr user");
