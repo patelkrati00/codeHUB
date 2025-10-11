@@ -88,3 +88,118 @@
 .signup-footer a:hover {
   text-decoration: underline;
 }
+
+/* ---------- GITHUB LOGIN PERFECT ALIGNMENT ---------- */
+.login-wrapper {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  gap: 20px;
+}
+
+.login-logo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.logo-login {
+  width: 60px;
+  height: 60px;
+}
+
+.login-heading {
+  margin-top: 8px;
+}
+
+.signup-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: #c9d1d9;
+  margin-bottom: 10px;
+}
+
+.login-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-box {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 24px;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 0 0 1px rgba(240, 246, 252, 0.1);
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #f0f6fc;
+  font-size: 14px;
+  width: 100%;
+  padding: 8px;
+}
+
+.input:focus {
+  border-color: #58a6ff;
+  outline: none;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: #238636 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.login-btn:hover {
+  background-color: #2ea043 !important;
+}
+
+.pass-box {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.pass-box a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pass-box a:hover {
+  text-decoration: underline;
+}

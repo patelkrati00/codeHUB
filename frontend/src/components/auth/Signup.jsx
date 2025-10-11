@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../authContext";
 import { Link, useNavigate } from "react-router-dom";
-import "./auth.css";
 import logo from "../../assets/gitHubLogo.png";
 import "./auth.css";
 
