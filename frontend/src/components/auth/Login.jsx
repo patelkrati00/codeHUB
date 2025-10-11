@@ -9,16 +9,16 @@ import logo from "../../assets/gitHubLogo.png";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  // useEffect(() => {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("userId");
-  //   setCurrentUser(null);
-  // });
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setCurrUser(null);
+  });
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setCurrentUser } = useAuth();
+  const { setCurrUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ const Login = () => {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.userId);
 
-      setCurrentUser(res.data.userId);
+      setCurrUser(res.data.userId);
       setLoading(false);
 
       window.location.href = "/";
