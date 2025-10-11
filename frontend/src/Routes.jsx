@@ -8,8 +8,9 @@ import Signup from './components/auth/Signup'
 import Profile from './components/user/Profile'
 
 import { useAuth } from './authContext'
+
 const ProjectRoutes = () => {
-  const [currUser, setCurrUser] = useAuth();
+const { currUser, setCurrUser } = useAuth();
   const navigate = useNavigate();
 
 
